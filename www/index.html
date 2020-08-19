@@ -5,10 +5,18 @@
 		<title>Only Connect</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto&display=swap">
 		<link rel="stylesheet" href="only-connect.css">
+		<script src="only-connect.js"></script>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 	</head>
 	<body>
-		<script src="only-connect.js"></script>
+		<script>
+			wall([
+				{clues:["lead", "gold", "copper", "zinc"], link:"Metals"},
+				{clues:["wasp", "fly", "cricket", "beetle"], link:"Insects"},
+				{clues:["spider", "super", "ant", "bat"], link:"____ man"},
+				{clues:["car", "boot", "iron", "dog"], link:"Monolopy pieces"}
+			]);
+		</script>
 	</body>
 </html>
