@@ -6,6 +6,7 @@ html, body {
 	background: #000000;
 
 	font-family: sans-serif;
+	color: #FFFFFF;
 }
 
 body {
@@ -34,12 +35,24 @@ body {
 	gap: 10px 10px;
 	padding: 10px;
 }
+.wall-editor {
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+	gap: 10px 10px;
+	padding: 10px;
+}
+
 .wall .brick {
 	width: 100%;
 	height: 100%;
 
 	position: relative;
 }
+.wall-editor .brick {
+	border-radius: 5px;
+}
+
 .wall .brick > div {
 	width: 100%;
 	height: 100%;
@@ -60,21 +73,61 @@ body {
 	font-size: calc(4vw);
 
 	color: #1D3C4C;
-	background: #91C3E4
+	background: #91C3E4;
 }
-.wall .brick.group0 > div {
+
+.wall .brick.group0 > div,
+.wall-editor .brick.group0 {
 	color: #FFFFFF;
 	background: #054872;
 }
-.wall .brick.group1 > div {
+.wall .brick.group1 > div,
+.wall-editor .brick.group1 {
 	color: #FFFFFF;
 	background: #097B5A;
 }
-.wall .brick.group2 > div {
+.wall .brick.group2 > div,
+.wall-editor .brick.group2 {
 	color: #FFFFFF;
 	background: #572143;
 }
-.wall .brick.group3 > div {
+.wall .brick.group3 > div,
+.wall-editor .brick.group3 {
 	color: #FFFFFF;
 	background: #056F7C;
+}
+
+.wall-editor .link.group0 {
+	border: 2px solid #054872;
+}
+.wall-editor .link.group1 {
+	border: 2px solid #097B5A;
+}
+.wall-editor .link.group2 {
+	border: 2px solid #572143;
+}
+.wall-editor .link.group3 {
+	border: 2px solid #056F7C;
+}
+
+.wall-editor input {
+	width:100%;
+	padding:5px;
+	background: transparent;
+	border: none;
+	outline: none;
+	color:#FFFFFF;
+}
+input[type=button] {
+	margin: 10px;
+	padding: 5px;
+	background: #FFFFFF;
+	border-radius: 5px;
+	outline: none;
+}
+textarea {
+	margin: 10px;
+	width: 800px;
+	height: 100px;
+	outline: none;
 }

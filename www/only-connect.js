@@ -12,10 +12,13 @@
 		return array;
 	}
 
-	function html(parent, tag, cssClass) {
+	function html(parent, tag, cssClass, content) {
 		let child = parent.appendChild(document.createElement(tag));
 		if(cssClass) {
-			child.classList.add(cssClass);
+			cssClass.split(" ").forEach(c => child.classList.add(c));
+		}
+		if(content) {
+			child.innerHTML = content;
 		}
 		return child;
 	}
@@ -42,7 +45,7 @@
 		bricks.forEach(function(brick) {
 			brick.html = html(wall, "div", "brick");
 			brick.float = html(brick.html, "div");
-			html(brick.float, "span").innerHTML = brick.clue;
+			html(brick.float, "span", "", brick.clue);
 		});
 
 		// add listener
@@ -135,6 +138,75 @@
 		}
 	}
 
+	function editor(groups) {
+		//const WIDTH = 4;
+		//let groups = [];
+
+		html(document.querySelector("body"), "h1", "", "Only Connect Wall Editor");
+		let wall = html(document.querySelector("body"), "div", "wall-editor");
+
+		groups = groups.map(function(group, index) {
+			let clues = group.clues.map(function(clue) {
+				let input = html(html(wall, "div", "brick group"+index), "input");
+				input.value = clue;
+				return input;
+			});
+			let input = html(html(wall, "div", "link group"+index), "input");
+			input.placeholder="link";
+			input.value = group.link;
+
+			return {
+				clues: clues,
+				link: input
+			}
+		});
+
+		/*for(let g=0; g<WIDTH; g++) {
+			var group = {
+				clues: []
+			};
+			for(let clue=0; clue<WIDTH; clue++) {
+				group.clues.push(html(html(wall, "div", "brick group"+g), "input"));
+			}
+			group.link = html(html(wall, "div", "link group"+g), "input");
+			group.link.placeholder="link";
+			groups.push(group);
+		}*/
+
+		let button = html(html(document.querySelector("body"), "div"), "input");
+		button.type="button";
+		button.value="Generate Link";
+
+		let linkBox = html(html(document.querySelector("body"), "div"), "textarea");
+
+		button.addEventListener("click", function() {
+			let json = JSON.stringify(groups, function(key, value) {
+				if(value instanceof HTMLInputElement) {
+					return value.value;
+				}
+				return value;
+			});
+
+			linkBox.value = "http://flat.moohar.com/only-connect/play.html?" + btoa(json);
+		});
+	}
+
+	function getGroups() {
+		let json = atob(location.search.substr(1));
+		try {
+			return JSON.parse(json);
+		} catch {
+			return [
+				{clues:["","","",""], link:""},
+				{clues:["","","",""], link:""},
+				{clues:["","","",""], link:""},
+				{clues:["","","",""], link:""}
+			];
+		}
+	}
+
 	// export
 	window.wall = wall;
+	window.editor = editor;
+	window.getGroups = getGroups;
 })();
