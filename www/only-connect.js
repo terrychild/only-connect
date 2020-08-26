@@ -43,10 +43,18 @@
 		let box = html(document.querySelector("body"), "div", "box-16x9");
 		let wall = html(box, "div", "wall");
 		bricks.forEach(function(brick) {
-			brick.html = html(wall, "div", "brick");
-			brick.float = html(brick.html, "div");
-			html(brick.float, "span", "", brick.clue);
+			brick.cell = html(wall, "div");
+			brick.html = html(brick.cell, "div", "brick");
+			html(brick.html, "span", "", brick.clue);
 		});
+
+		// resize text
+		(new ResizeObserver(function() {
+			let size = (wall.offsetHeight/16)+"px";
+			bricks.forEach(function(brick) {
+				brick.html.style.fontSize = size;
+			});
+		})).observe(wall);
 
 		// add listener
 		wall.addEventListener("click", function(event) {
@@ -94,8 +102,8 @@
 					} else {
 						brick.newIndex = restIndex++;
 					}
-					brick.newTop = bricks[brick.newIndex].html.offsetTop;
-					brick.newLeft = bricks[brick.newIndex].html.offsetLeft;
+					brick.newTop = bricks[brick.newIndex].cell.offsetTop;
+					brick.newLeft = bricks[brick.newIndex].cell.offsetLeft;
 				});
 				bricks.sort(function(a,b) {
 					return a.newIndex - b.newIndex;
@@ -112,19 +120,19 @@
 
 				// move
 				bricks.forEach(function(brick) {
-					brick.float.style.transitionProperty = "top, left";
-					brick.float.style.top = (brick.newTop - brick.html.offsetTop)+"px";
-					brick.float.style.left = (brick.newLeft - brick.html.offsetLeft)+"px";
+					brick.html.style.transitionProperty = "top, left";
+					brick.html.style.top = (brick.newTop - brick.cell.offsetTop)+"px";
+					brick.html.style.left = (brick.newLeft - brick.cell.offsetLeft)+"px";
 				});
 				setTimeout(function() {
 					bricks.forEach(function(brick) {
-						brick.float.style.transitionProperty = "none";
-						brick.float.style.top = "0px";
-						brick.float.style.left = "0px";
-						wall.removeChild(brick.html);
+						brick.html.style.transitionProperty = "none";
+						brick.html.style.top = "0px";
+						brick.html.style.left = "0px";
+						wall.removeChild(brick.cell);
 					});
 					bricks.forEach(function(brick) {
-						wall.appendChild(brick.html);
+						wall.appendChild(brick.cell);
 					});
 					locked = false;
 				}, 1000);
