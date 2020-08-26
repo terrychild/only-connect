@@ -161,18 +161,6 @@
 			}
 		});
 
-		/*for(let g=0; g<WIDTH; g++) {
-			var group = {
-				clues: []
-			};
-			for(let clue=0; clue<WIDTH; clue++) {
-				group.clues.push(html(html(wall, "div", "brick group"+g), "input"));
-			}
-			group.link = html(html(wall, "div", "link group"+g), "input");
-			group.link.placeholder="link";
-			groups.push(group);
-		}*/
-
 		let button = html(html(document.querySelector("body"), "div"), "input");
 		button.type="button";
 		button.value="Generate Link";
@@ -180,33 +168,59 @@
 		let linkBox = html(html(document.querySelector("body"), "div"), "textarea");
 
 		button.addEventListener("click", function() {
-			let json = JSON.stringify(groups, function(key, value) {
-				if(value instanceof HTMLInputElement) {
-					return value.value;
-				}
-				return value;
-			});
+			try {
+				let links = {};
+				let clues = {};
+				let data = groups.reduce(function(accumulator, group) {
+					return accumulator + "|" + group.clues.reduce(function(accumulator, clue) {
+						return accumulator + ";" + valididateInput("clue", clues, clue);
+					}, valididateInput("link", links, group.link));
+				}, "4");
 
-			linkBox.value = "http://flat.moohar.com/only-connect/play.html?" + btoa(json);
+				linkBox.value = location.origin + location.pathname.replace("edit.html", "play.html") + "?" + btoa(data);
+			} catch (e) {
+				linkBox.value = "Error!\n"+ e;
+			}
 		});
 	}
+	function valididateInput(label, dups, input) {
+		let value = input.value.trim();
+		if(value==="") {
+			throw "Missing "+label;
+		}
+		if(dups[value]) {
+			throw "Duplicate "+label+": "+value;
+		} else {
+			dups[value] = true;
+		}
+		if(value.match(/[|;]/)) {
+			throw "Invalid charcter in : "+value;
+		}
+		return value;
+	}
 
-	function getGroups() {
-		let json = atob(location.search.substr(1));
+	function getData() {
+		let data = atob(location.search.substr(1));
 		try {
-			return JSON.parse(json);
+			return JSON.parse(data);
 		} catch {
-			return [
-				{clues:["","","",""], link:""},
-				{clues:["","","",""], link:""},
-				{clues:["","","",""], link:""},
-				{clues:["","","",""], link:""}
-			];
+			let groups = data.split("|");
+			if(groups[0]==="4") {
+				return groups.slice(1).map(function(group) {
+					var clues = group.split(";");
+					return {
+						link: group[0],
+						clues: clues.slice(1)
+					};
+				});
+			} else {
+				return [];
+			}
 		}
 	}
 
 	// export
 	window.wall = wall;
 	window.editor = editor;
-	window.getGroups = getGroups;
+	window.getData = getData;
 })();
