@@ -42,24 +42,39 @@
 		// build html
 		let playarea = html(document.querySelector("body"), "div", "playarea");
 
-		let wall = html(playarea, "div", "wall");
+		let wall = html(playarea, "div", "wall player");
 		bricks.forEach(function(brick) {
 			brick.cell = html(wall, "div");
 			brick.html = html(brick.cell, "div", "brick");
 			html(brick.html, "span", "", brick.clue);
 		});
+		let links;
 
-		// resize wall
+		// sizing
 		(new ResizeObserver(function() {
-			console.log(wall.offsetWidth);
 			wall.style.height = (wall.offsetWidth * 0.5625) + "px";
-			let size = (wall.offsetHeight/16)+"px";
-			bricks.forEach(function(brick) {
-				brick.html.style.fontSize = size;
-			});
+			if(links) {
+				links.style.height = wall.offsetHeight+"px";
+			}
+			playarea.style.fontSize = (wall.offsetHeight/16)+"px";
 		})).observe(wall);
 
-		// add listener
+		if(window.innerWidth>window.innerHeight) {
+			playarea.classList.add("wide");
+		} else {
+			playarea.classList.add("tall");
+		}
+		window.addEventListener("resize", function() {
+			if(window.innerWidth>window.innerHeight) {
+				playarea.classList.add("wide");
+				playarea.classList.remove("tall");
+			} else {
+				playarea.classList.remove("wide");
+				playarea.classList.add("tall");
+			}
+		});
+
+		// interaction
 		wall.addEventListener("click", function(event) {
 			var el = event.target;
 			while(!el.classList.contains("brick") && el!=wall) {
@@ -158,11 +173,21 @@
 		}
 
 		function win() {
-			/*let links = html(playarea, "div", "wall links");
-			for(let i=0; i<WIDTH; i++) {
-				let link = html(links, "div", "link group"+i, bricks[i*WIDTH].link);
-			};
-			links.style.width = "200px";*/
+			wall.classList.add("won");
+			setTimeout(function() {
+				links = html(playarea, "div", "wall links");
+				bricks.filter((brick, i) => i%4==0).forEach(function(brick, i) {
+					let link = html(links, "div", "link group"+i, );
+					let span = html(link, "span", "hidden", "click to reveal link");
+					link.addEventListener("click", function() {
+						if(span.classList.contains("hidden")) {
+							span.classList.remove("hidden");
+							span.innerHTML=brick.link;
+						}
+					})
+				});
+				links.style.height = wall.offsetHeight+"px";
+			}, 1100);
 		}
 	}
 
@@ -233,7 +258,7 @@
 			return JSON.parse(data);
 		} catch {
 			let groups = data.split("|");
-			if(groups[0]==="4") {
+			if(groups[0]==="4" && groups.length==5) {
 				return groups.slice(1).map(function(group) {
 					var clues = group.split(";");
 					return {
@@ -242,7 +267,12 @@
 					};
 				});
 			} else {
-				return [];
+				return [
+					{link:"",clues:["","","",""]},
+					{link:"",clues:["","","",""]},
+					{link:"",clues:["","","",""]},
+					{link:"",clues:["","","",""]}
+				];
 			}
 		}
 	}
