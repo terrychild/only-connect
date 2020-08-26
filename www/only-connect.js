@@ -235,21 +235,22 @@
 				linkBox.value = "Error!\n"+ e;
 			}
 		});
-	}
-	function valididateInput(label, dups, input) {
-		let value = input.value.trim();
-		if(value==="") {
-			throw "Missing "+label;
+
+		function valididateInput(label, dups, input) {
+			let value = input.value.trim();
+			if(value==="") {
+				throw "Missing "+label;
+			}
+			if(dups[value]) {
+				throw "Duplicate "+label+": "+value;
+			} else {
+				dups[value] = true;
+			}
+			if(value.match(/[|;]/)) {
+				throw "Invalid charcter in : "+value;
+			}
+			return value;
 		}
-		if(dups[value]) {
-			throw "Duplicate "+label+": "+value;
-		} else {
-			dups[value] = true;
-		}
-		if(value.match(/[|;]/)) {
-			throw "Invalid charcter in : "+value;
-		}
-		return value;
 	}
 
 	function getData() {
