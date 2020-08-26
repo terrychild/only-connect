@@ -72,13 +72,18 @@
 		let selected = [];
 		function selectBrick(brick) {
 			if(!locked) {
-				if(brick.group>=WIDTH && !selected.includes(brick)) {
-					selected.push(brick);
-					brick.html.classList.add("group" + group);
+				if(brick.group>=WIDTH) {
+					if(!selected.includes(brick)) {
+						selected.push(brick);
+						brick.html.classList.add("group" + group);
 
-					if(selected.length==WIDTH) {
-						locked = true;
-						setTimeout(checkSelected, 350);
+						if(selected.length==WIDTH) {
+							locked = true;
+							setTimeout(checkSelected, 350);
+						}
+					} else {
+						selected = selected.filter(b => b!=brick);
+						brick.html.classList.remove("group" + group);
 					}
 				}
 			}
