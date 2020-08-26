@@ -103,6 +103,9 @@ html, body {
 .link.group3 {
 	border: 2px solid #056F7C;
 }
+.link .hidden {
+	font-style: italic;
+}
 
 .wall.editor input {
 	box-sizing: border-box;
