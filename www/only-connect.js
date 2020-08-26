@@ -40,16 +40,19 @@
 		shuffle(bricks);
 
 		// build html
-		let box = html(document.querySelector("body"), "div", "box-16x9");
-		let wall = html(box, "div", "wall");
+		let playarea = html(document.querySelector("body"), "div", "playarea");
+
+		let wall = html(playarea, "div", "wall");
 		bricks.forEach(function(brick) {
 			brick.cell = html(wall, "div");
 			brick.html = html(brick.cell, "div", "brick");
 			html(brick.html, "span", "", brick.clue);
 		});
 
-		// resize text
+		// resize wall
 		(new ResizeObserver(function() {
+			console.log(wall.offsetWidth);
+			wall.style.height = (wall.offsetWidth * 0.5625) + "px";
 			let size = (wall.offsetHeight/16)+"px";
 			bricks.forEach(function(brick) {
 				brick.html.style.fontSize = size;
@@ -139,7 +142,11 @@
 					bricks.forEach(function(brick) {
 						wall.appendChild(brick.cell);
 					});
-					locked = false;
+					if(group < WIDTH-1) {
+						locked = false;
+					} else {
+						win();
+					}
 				}, 1000);
 			} else {
 				selected.forEach(function(brick) {
@@ -149,6 +156,14 @@
 			}
 			selected = [];
 		}
+
+		function win() {
+			/*let links = html(playarea, "div", "wall links");
+			for(let i=0; i<WIDTH; i++) {
+				let link = html(links, "div", "link group"+i, bricks[i*WIDTH].link);
+			};
+			links.style.width = "200px";*/
+		}
 	}
 
 	function editor(groups) {
@@ -156,7 +171,7 @@
 		//let groups = [];
 
 		html(document.querySelector("body"), "h1", "", "Only Connect Wall Editor");
-		let wall = html(document.querySelector("body"), "div", "wall-editor");
+		let wall = html(document.querySelector("body"), "div", "wall editor");
 
 		groups = groups.map(function(group, index) {
 			let clues = group.clues.map(function(clue) {
@@ -222,7 +237,7 @@
 				return groups.slice(1).map(function(group) {
 					var clues = group.split(";");
 					return {
-						link: group[0],
+						link: clues[0],
 						clues: clues.slice(1)
 					};
 				});
