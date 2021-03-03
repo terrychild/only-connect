@@ -15,7 +15,7 @@
 	function html(parent, tag, cssClass, content) {
 		let child = parent.appendChild(document.createElement(tag));
 		if(cssClass) {
-			cssClass.split(" ").forEach(c => child.classList.add(c));
+			child.classList.add(...cssClass.split(" "));
 		}
 		if(content) {
 			child.innerHTML = content;
