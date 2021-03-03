@@ -15,27 +15,28 @@ html, body {
 }
 
 .wall {
-	box-sizing: border-box;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr 1fr;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
 	gap: 10px 10px;
 	padding: 10px;
 }
 .wall.player {
-	transition: width 1s ease;
+	box-sizing: border-box;
 	width: 100%;
+	transition: width 1s ease;
 }
 .wide .wall.player.won {
 	width: 66%;
 }
 .wall.editor {
-	grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+	grid-template-columns: repeat(4, 1fr) 2fr;
 }
 .wall.links {
 	grid-template-columns: 1fr;
 }
 .wide .wall.links {
+	box-sizing: border-box;
 	width: 33%;
 	position: absolute;
 	right: 0;
@@ -43,14 +44,13 @@ html, body {
 }
 
 .wall > div {
-	width: 100%;
-	height: 100%;
-
+	/*width: 100%;
+	height: 100%;*/
 	position: relative;
 }
 .wall.player .brick,
 .wall.links .link {
-	width: 100%;
+	/*width: 100%;*/
 	height: 100%;
 
 	position: relative;
@@ -64,7 +64,7 @@ html, body {
 	flex-flow: column;
 	justify-content: center;
 	align-items: center;
-	text-align: center;
+	/*text-align: center;*/
 }
 
 .brick {
