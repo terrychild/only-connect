@@ -52,7 +52,7 @@
 
 		// sizing
 		(new ResizeObserver(function() {
-			wall.style.height = (wall.offsetWidth * 0.5625) + "px";
+			wall.style.height = (wall.offsetWidth * 0.5625)+"px";
 			if(links) {
 				links.style.height = wall.offsetHeight+"px";
 			}
