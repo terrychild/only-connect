@@ -43,6 +43,9 @@
 			brick.cell = html(wall, "div");
 			brick.html = html(brick.cell, "div", "brick");
 			html(brick.html, "span", "", brick.clue);
+			brick.html.addEventListener("click", function() {
+				selectBrick(brick);
+			});
 		});
 		let links;
 
@@ -71,16 +74,6 @@
 		});
 
 		// interaction
-		wall.addEventListener("click", function(event) {
-			var el = event.target;
-			while(!el.classList.contains("brick") && el!=wall) {
-				el = el.parentNode;
-			}
-			if(el.classList.contains("brick")) {
-				selectBrick(bricks.find(brick => brick.html == el));
-			}
-		});
-
 		let locked = false;
 		let group = 0;
 		let selected = [];
