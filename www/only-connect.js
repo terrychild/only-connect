@@ -2,10 +2,9 @@
 
 (function() {
 	function shuffle(array) {
-		var temp, rand;
-		for(var i=array.length-1; i>=0; i--) {
-			rand = Math.floor(Math.random() * (i+1));
-			temp = array[rand];
+		for(var i=array.length-1; i>0; i--) {
+			let rand = Math.floor(Math.random() * (i+1));
+			let temp = array[rand];
 			array[rand] = array[i];
 			array[i] = temp;
 		}
