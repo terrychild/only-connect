@@ -27,16 +27,13 @@
 		const WIDTH = 4;
 
 		// Turn the groups data into a shuffled lists of bricks
-		var bricks = [];
-		groups.forEach(function(group) {
-			group.clues.forEach(function(clue) {
-				bricks.push({
-					clue:clue,
-					link:group.link,
-					group: 99
-				});
-			});
-		});
+		var bricks = groups.flatMap( (group) =>
+			group.clues.map( (clue) => ({
+				clue: clue,
+				link: group.link,
+				group: 99
+			}))
+		);
 		shuffle(bricks);
 
 		// build html
