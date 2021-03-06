@@ -140,11 +140,9 @@
 				});
 				setTimeout(function() {
 					bricks.forEach(function(brick) {
+						wall.removeChild(brick.cell);
 						brick.html.style.top = "0px";
 						brick.html.style.left = "0px";
-						wall.removeChild(brick.cell);
-					});
-					bricks.forEach(function(brick) {
 						wall.appendChild(brick.cell);
 					});
 					if(group < WIDTH) {

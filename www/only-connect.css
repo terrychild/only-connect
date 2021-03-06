@@ -50,15 +50,16 @@ html, body {
 .wall.links .link {
 	height: 100%;
 
-	position: relative;
-	top: 0;
-	left: 0;
-	transition: top 1s ease, left 1s ease;
-
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
 	align-items: center;
+}
+.wall.player .brick {
+	position: relative;
+	top: 0;
+	left: 0;
+	transition: top 1s ease, left 1s ease;
 }
 
 .brick {
