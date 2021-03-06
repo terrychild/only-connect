@@ -53,9 +53,7 @@ html, body {
 	position: relative;
 	top: 0;
 	left: 0;
-	transition-property: none;
-	transition-duration: 1s;
-	transition-timing-function: ease;
+	transition: top 1s ease, left 1s ease;
 
 	display: flex;
 	flex-flow: column;

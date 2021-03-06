@@ -135,13 +135,11 @@
 
 				// move
 				bricks.forEach(function(brick) {
-					brick.html.style.transitionProperty = "top, left";
 					brick.html.style.top = (brick.newTop - brick.cell.offsetTop)+"px";
 					brick.html.style.left = (brick.newLeft - brick.cell.offsetLeft)+"px";
 				});
 				setTimeout(function() {
 					bricks.forEach(function(brick) {
-						brick.html.style.transitionProperty = "none";
 						brick.html.style.top = "0px";
 						brick.html.style.left = "0px";
 						wall.removeChild(brick.cell);
