@@ -58,21 +58,6 @@
 			playarea.style.fontSize = (wall.offsetHeight/16)+"px";
 		})).observe(wall);
 
-		if(window.innerWidth>window.innerHeight) {
-			playarea.classList.add("wide");
-		} else {
-			playarea.classList.add("tall");
-		}
-		window.addEventListener("resize", function() {
-			if(window.innerWidth>window.innerHeight) {
-				playarea.classList.add("wide");
-				playarea.classList.remove("tall");
-			} else {
-				playarea.classList.remove("wide");
-				playarea.classList.add("tall");
-			}
-		});
-
 		// interaction
 		let locked = false;
 		let group = 0;

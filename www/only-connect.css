@@ -26,21 +26,23 @@ html, body {
 	width: 100%;
 	transition: width 1s ease;
 }
-.wide .wall.player.won {
-	width: 66%;
-}
 .wall.editor {
 	grid-template-columns: repeat(4, 1fr) 2fr;
 }
 .wall.links {
 	grid-template-columns: 1fr;
 }
-.wide .wall.links {
-	box-sizing: border-box;
-	width: 33%;
-	position: absolute;
-	right: 0;
-	top: 0;
+@media screen and (orientation:landscape) {
+	.wall.player.won {
+		width: 66%;
+	}
+	.wall.links {
+		box-sizing: border-box;
+		width: 33%;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
 }
 
 .wall > div {
