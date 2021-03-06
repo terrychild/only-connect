@@ -30,7 +30,7 @@
 			group.clues.map( (clue) => ({
 				clue: clue,
 				link: group.link,
-				group: 99
+				group: WIDTH
 			}))
 		);
 		shuffle(bricks);
@@ -79,7 +79,7 @@
 		let selected = [];
 		function selectBrick(brick) {
 			if(!locked) {
-				if(brick.group>=WIDTH) {
+				if(brick.group==WIDTH) {
 					if(!selected.includes(brick)) {
 						selected.push(brick);
 						brick.html.classList.add("group" + group);
@@ -105,22 +105,24 @@
 				});
 				// calculate new position in the grid
 				let groupIndex = group * WIDTH;
-				let restIndex = groupIndex + WIDTH;
+				let unsolvedIndex = groupIndex + WIDTH;
 				bricks.forEach(function(brick, index) {
 					if(brick.group<group) {
 						brick.newIndex = index;
 					} else if(brick.group==group) {
 						brick.newIndex = groupIndex++;
 					} else {
-						brick.newIndex = restIndex++;
+						brick.newIndex = unsolvedIndex++;
 					}
 					brick.newTop = bricks[brick.newIndex].cell.offsetTop;
 					brick.newLeft = bricks[brick.newIndex].cell.offsetLeft;
 				});
-				bricks.sort(function(a,b) {
-					return a.newIndex - b.newIndex;
-				});
+				bricks.sort((a,b) => a.newIndex - b.newIndex);
+
+				// next group
 				group++;
+
+				// is there only one group left?
 				if(group == WIDTH-1) {
 					bricks.forEach(function(brick) {
 						if(brick.group>group) {
@@ -128,6 +130,7 @@
 							brick.html.classList.add("group" + group);
 						}
 					});
+					group++;
 				}
 
 				// move
@@ -146,13 +149,14 @@
 					bricks.forEach(function(brick) {
 						wall.appendChild(brick.cell);
 					});
-					if(group < WIDTH-1) {
+					if(group < WIDTH) {
 						locked = false;
 					} else {
 						win();
 					}
 				}, 1000);
 			} else {
+				// an incorrect group
 				selected.forEach(function(brick) {
 					brick.html.classList.remove("group" + group);
 				});
