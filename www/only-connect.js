@@ -25,6 +25,16 @@
 	function wall(groups) {
 		const WIDTH = 4;
 
+		// if there is no data use hard coded default
+		if(!groups) {
+			groups = [
+				{link:"Metals", clues:["lead", "gold", "copper", "zinc"]},
+				{link:"Insects", clues:["wasp", "fly", "cricket", "beetle"]},
+				{link:"____man", clues:["spider", "super", "ant", "bat"]},
+				{link:"Monolopy pieces", clues:["car", "boot", "iron", "dog"]}
+			];
+		}
+
 		// Turn the groups data into a shuffled lists of bricks
 		var bricks = groups.flatMap( (group) =>
 			group.clues.map( (clue) => ({
@@ -166,6 +176,15 @@
 	}
 
 	function editor(groups) {
+		if(!groups) {
+			groups = [
+				{link:"",clues:["","","",""]},
+				{link:"",clues:["","","",""]},
+				{link:"",clues:["","","",""]},
+				{link:"",clues:["","","",""]}
+			];
+		}
+
 		html(document.querySelector("body"), "h1", "", "Only Connect Wall Editor");
 		let wall = html(document.querySelector("body"), "div", "wall editor");
 
@@ -242,13 +261,6 @@
 					clues: clues.slice(1)
 				};
 			});
-		} else {
-			return [
-				{link:"",clues:["","","",""]},
-				{link:"",clues:["","","",""]},
-				{link:"",clues:["","","",""]},
-				{link:"",clues:["","","",""]}
-			];
 		}
 	}
 
