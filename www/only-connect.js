@@ -166,9 +166,6 @@
 	}
 
 	function editor(groups) {
-		//const WIDTH = 4;
-		//let groups = [];
-
 		html(document.querySelector("body"), "h1", "", "Only Connect Wall Editor");
 		let wall = html(document.querySelector("body"), "div", "wall editor");
 
@@ -196,15 +193,22 @@
 
 		button.addEventListener("click", function() {
 			try {
+				// duplicate tracking
 				let links = {};
 				let clues = {};
-				let data = groups.reduce(function(accumulator, group) {
-					return accumulator + "|" + group.clues.reduce(function(accumulator, clue) {
-						return accumulator + ";" + valididateInput("clue", clues, clue);
+
+				// fields to data string
+				let data = groups.reduce(function(acc, group) {
+					return acc + "|" + group.clues.reduce(function(acc, clue) {
+						return acc + ";" + valididateInput("clue", clues, clue);
 					}, valididateInput("link", links, group.link));
 				}, "4");
 
-				linkBox.value = location.origin + location.pathname.replace("edit.html", "play.html") + "?" + btoa(data);
+				// turn into url
+				linkBox.value =
+					location.origin +
+					location.pathname.replace("edit.html", "play.html") +
+					"?" + btoa(data);
 			} catch (e) {
 				linkBox.value = "Error!\n"+ e;
 			}
@@ -221,7 +225,7 @@
 				dups[value] = true;
 			}
 			if(value.match(/[|;]/)) {
-				throw "Invalid charcter in : "+value;
+				throw "Invalid character in : "+value;
 			}
 			return value;
 		}
@@ -229,26 +233,22 @@
 
 	function getData() {
 		let data = atob(location.search.substr(1));
-		try {
-			return JSON.parse(data);
-		} catch {
-			let groups = data.split("|");
-			if(groups[0]==="4" && groups.length==5) {
-				return groups.slice(1).map(function(group) {
-					var clues = group.split(";");
-					return {
-						link: clues[0],
-						clues: clues.slice(1)
-					};
-				});
-			} else {
-				return [
-					{link:"",clues:["","","",""]},
-					{link:"",clues:["","","",""]},
-					{link:"",clues:["","","",""]},
-					{link:"",clues:["","","",""]}
-				];
-			}
+		let groups = data.split("|");
+		if(groups[0]==="4" && groups.length==5) {
+			return groups.slice(1).map(function(group) {
+				var clues = group.split(";");
+				return {
+					link: clues[0],
+					clues: clues.slice(1)
+				};
+			});
+		} else {
+			return [
+				{link:"",clues:["","","",""]},
+				{link:"",clues:["","","",""]},
+				{link:"",clues:["","","",""]},
+				{link:"",clues:["","","",""]}
+			];
 		}
 	}
 
