@@ -10,11 +10,11 @@ Months later and in desperate need of a format change one of our group decided t
 
 An example wall before solving would look like this:
 
-![alt_text](images/tv1.png "image_tooltip")
+![alt_text](images/tv1.png "Example wall")
 
 That same wall would look like this when solved:
 
-![alt_text](images/tv2.png "image_tooltip")
+![alt_text](images/tv2.png "Solved wall")
 
 In this example the connections are: cakes; poets; fictional detectives and waterfalls.
 
@@ -126,7 +126,7 @@ let wall = html(playarea, "div", "wall");
 
 Which produced a wall that looks like this:
 
-![alt_text](images/wall1.png "image_tooltip")
+![alt_text](images/wall1.png "Wall test")
 
 The width of the bricks is driven by the width of the grid and therefore the width of the screen, I’m happy with this.  The height however is driven by their content and I wanted instead to make the wall and bricks a constant aspect ratio and size the content to fit the brick.
 
@@ -153,7 +153,7 @@ The resulting JavaScript is quite simple.  The first line of the function sets t
 
 The result is the wall now takes up the available vertical space and the font size is better, but I need to do some work on the bricks.
 
-![alt_text](images/wall2.png "image_tooltip")
+![alt_text](images/wall2.png "Wall test")
 
 To get the bricks to use the available space in each cell is a simple matter of making their height 100%.  I also used the flex layout to center the text in each brick horizontally and vertically.
 
@@ -174,7 +174,7 @@ To get the bricks to use the available space in each cell is a simple matter of 
 
 With this code I am happy with how the wall looks.  More importantly it looks consistent on any number of screen sizes and orientations.
 
-![alt_text](images/wall3.png "image_tooltip")
+![alt_text](images/wall3.png "Wall test")
 
 An additional note regarding layout.  You may have spotted the HTML page contains a viewport meta tag, this is to prevent any scaling on mobile devices.  In effect this moves the responsibility of scaling from the phone’s browser to my CSS, I found this to give more predictable results.
 
@@ -315,7 +315,7 @@ When a brick is selected it needs to change colour to indicate it has been selec
 }
 ```
 
-![alt_text](images/colours.png "image_tooltip")
+![alt_text](images/colours.png "Wall colours")
 
 The game logic uses the group variable to keep track of which group is currently being built and the selected array to keep a list of those selected bricks.  The selectBrick function adds a brick to this array and updates the class of the brick with the current group.  If the brick is already selected then it removes the class and removes it from the array, this allows the player to unselect a brick.  When the number of selected bricks reaches 4 the checkSelected function is called to validate the selection.  For now this just clears the selection as if it was an invalid selection.
 
@@ -346,7 +346,7 @@ function checkSelected() {
 }
 ```
 
-![alt_text](images/oc-1.gif "image_tooltip")
+![alt_text](images/oc-1.gif "Selection test")
 
 It seems at first glance that the fourth brick is not being selected.  This is because the moment the brick is selected the checkSelected function is called which then clears the selection.  I need to add a short delay before running the check code.  Thinking forwards a little bit, this is the point I would trigger any animation if the group is a valid selection.  I want to block the player from changing any selections during this animation so I need to add a lock flag to the game logic, set the flag to true whenever a fourth brick is selected and prevent the player from interaction during this delay/animation.
 
@@ -384,7 +384,7 @@ function checkSelected() {
 }
 ```
 
-![alt_text](images/oc-2.gif "image_tooltip")
+![alt_text](images/oc-2.gif "Selection test 2")
 
 I used the array’s filter method instead of splice to remove the brick when required.  I’m not sure of the performance differences between filter and splice, in this example probably not a lot.  I do feel the filter code is a little less cryptic compared to splice.
 
@@ -416,7 +416,7 @@ Next I have to compute where each brick needs to move to.  For list/array manipu
 
 Consider this example where the “cakes” have already been selected and moved to the top row.  The “poets” have now been selected and the checkSelected code has determined it is a valid group and has therefore set the group for these elements to the current group number (1).
 
-![alt_text](images/wall4.png "image_tooltip")
+![alt_text](images/wall4.png "Wall groups")
 
 I use two variables, groupIndex and unsolvedndex, to track where elements for the current group and unsolved bricks should be moved to.  The groupIndex is initially set to the groupNumber multiplied by 4, and incremented by one each time it is used.  The unsolvedIndex works the same but starts 4 elements after the groupIndex.
 
@@ -426,7 +426,7 @@ I can now use the following logic to work out what the new index for each elemen
 *   For bricks with a group equal to the current group number they need to be moved “up” to the next available row.
 *   For bricks with a group number greater than the current group they need to be moved “down” to an available space.
 
-![alt_text](images/wall5.png "image_tooltip")
+![alt_text](images/wall5.png "Wall indexes")
 
 Sorting the array can then be done with the native array sort method and a compare function that references the new index.
 
@@ -458,7 +458,7 @@ bricks.forEach(function(brick) {
 });
 ```
 
-![alt_text](images/wall6.png "image_tooltip")
+![alt_text](images/wall6.png "Wall test")
 
 Before moving on let’s consider my edge cases.  Selecting the first group works without any changes to the code.  The first group is number 0, so groupIndex is computed to be 0 which is correct.  No bricks have a group set to less than 0 so that branch of code is never triggered, also correct.
 
@@ -529,7 +529,7 @@ bricks.forEach(function(brick) {
 
 Then the CSS transitions kick in and magic happens!
 
-![alt_text](images/oc-3.gif "image_tooltip")
+![alt_text](images/oc-3.gif "It moves!")
 
 After the transition, I temporarily remove the bricks from the grid, reset the top and left to 0 and re-add them in the correct order.  The transition does not apply when I reset the top and left properties as the element is not part of the DOM at the time.  At this point everything should be reset and ready for the next group.
 
@@ -552,7 +552,7 @@ Once the final group has been completed, I added a way for the player to confirm
 
 I did this by shrinking the wall down to two thirds width (using transitions of course) and then using the right third of the screen to show the links for each group.  Each link is initially hidden allowing the player to control when the link is revealed.
 
-![alt_text](images/oc-4.gif "image_tooltip")
+![alt_text](images/oc-4.gif "Group links")
 
 When playing on a phone in portrait mode, this makes the text unnecessarily small considering all the free space under the wall.
 
@@ -577,7 +577,7 @@ A big goal for me in this project was to let people create their own walls.  My 
 
 The HTML for the editor is a simplified version of grid from the main wall.  It borrows a lot of the CSS but doesn’t scale to fit the page or have any animation.  Each cell has an input with transparent backgrounds so the grid colours show through.
 
-![alt_text](images/editor1.png "image_tooltip")
+![alt_text](images/editor1.png "Editor")
 
 The important code is behind the “Generate Link” button.  Initially I was going to store the data using JSON, however I wanted to keep the string length down so switched to a simple delimited string.  The data is stored in the following format:
 
@@ -632,7 +632,7 @@ function getData() {
 
 ## Improvements
 
-At this point I’m ready to call this project complete.  It’s functional and I’ve discovered trying to come up with walls is quite fun in it’s self.
+At this point I’m ready to call this project complete.  It’s functional and does what I need it to do.
 
 That said there are always improvements I could make, here are some obvious ones that are missing when compare to the TV show:
 
@@ -640,7 +640,7 @@ That said there are always improvements I could make, here are some obvious ones
 *   Add a timer to add some extra pressure.
 *   Once you get down to the last two groups, make it so you can only enter three incorrect guesses, before failing.
 
-In addition, I could make it more accessible by adding a hint system which reveals the link for one of the undiscovered groups if you have too many incorrect guesses.
+In addition, I also had some thoughts about making it more accessible by adding a hint system which reveals the link for one of the undiscovered groups if you have too many incorrect guesses.
 
 ## Conclusion
 
@@ -648,9 +648,18 @@ I’ve had fun going back to basics and exploring what is possible with native J
 
 I am particularly impressed I’ve not written a single line of code to deal with browser inconsistencies.  I need to explore the grid layout some more, I only scratch the surface of what it can do.  I’ll be using the observer API quite a bit as that saves a tone of code.  I need another side project where I can play with CSS transitions and animations a bit more.  Getting stuff to slide around the screen was fun, but what else can I do?
 
-The next time I go to habitually include that library I’ve been using for years, I will take a second to review that decision and ask if I can do without it.  Not needing to load a library is going to save time and bandwidth, and native CSS and JavaScript is going to run faster than a library that needs to be interpreted.
+The next time I go to habitually include the same set of libraries I’ve been using for years, I will take a second to review and ask if I can do without them.  Not needing to load a library is going to save time and bandwidth, and native CSS and JavaScript is going to run faster than a library that needs to be interpreted.
 
 I’m not writing off all libraries, they have their place but if like me you started using a library to smooth over the problems with browsers, you might be pleasantly surprised to find you don’t need that library any more.  That is unless you still need to support Internet Explorer.
 
 ## Links
 
+You can find the full source on [github](https://github.com/terrychild/only-connect).
+
+Here are a number of wall's we've created you can have a go at:
+* [The one that triggered this whole project](http://www.moohar.com/only-connect/play.html?NHxNZXRhbHM7bGVhZDtnb2xkO2NvcHBlcjt6aW5jfEluc2VjdHM7d2FzcDtmbHk7Y3JpY2tldDtiZWV0bGV8X19fX21hbjtzcGlkZXI7c3VwZXI7YW50O2JhdHxNb25vbG9weSBwaWVjZXM7Y2FyO2Jvb3Q7aXJvbjtkb2c=).
+* [The difficult sequel](http://www.moohar.com/only-connect/play.html?NHxTY290dGlzaCBCYW5kcztCZWxsZSAmIFNlYmFzdGlhbjtJZGxld2lsZDtUZXhhcztUcmF2aXN8UmVuYWlzc2FuY2UgYXJ0aXN0cztSYXBoYWVsO0RvbmF0ZWxsbztCb3R0aWNlbGxpO01pY2hlbGFuZ2Vsb3xBc3Nhc3NpbmF0aW9uIHZpY3RpbXM7SkZLO0ZyYW56IEZlcmRpbmFuZDtNYWhhdG1hIEdhbmRoaTtNYXJ0aW4gTHV0aGVyIEtpbmd8QWlycG9ydHM7U2NoaXBvbDtDaGFybGVzIERlIEdhdWxsZTtHYXR3aWNrO0xlb25hcmRvIERhIFZpbmNp).
+* [One for movie fans](http://www.moohar.com/only-connect/play.html?NHxCYXRtYW47Q2xvb25leTtCYWxlO0tpbG5lcjtLZWF0b258Qm9uZDtDb25uZXJ5O01vb3JlO0Jyb3NuYW47Q3JhaWd8SmFjayBSeWFuO0JhbGR3aW47Rm9yZDtBZmZsZWNrO1BpbmV8RHVtYmxlZG9yZTtIYXJyaXM7R2FtYm9uO0xhdztSZWdibw==).
+* [And one more](http://www.moohar.com/only-connect/play.html?NHxUb3AgX19fX187R3VuO1Nob3A7SGF0O0dlYXJ8UXVhcmtzO1N0cmFuZ2U7Q2hhcm07VG9wO0Rvd258UGl4YXIgZmlsbXM7VXA7U291bDtCcmF2ZTtDYXJzfERuRCBDaGFyYWN0ZXIgdHJhaXRzO0FnZ3Jlc3NpdmU7RGlzaG9uZXN0O1BvbGl0ZTtQYXNzaW9uYXRl).
+
+You can access the editor [here](http://www.moohar.com/only-connect/edit.html).
