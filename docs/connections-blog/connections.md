@@ -209,7 +209,7 @@ Classic me would achieve this translation with a pair of nested loops.  I would 
 
 ```javascript
 // Turn the groups data into a lists of bricks
-var bricks = [];
+let bricks = [];
 groups.forEach(function(group) {
 	group.clues.forEach(function(clue) {
 		bricks.push({
@@ -224,7 +224,7 @@ However the forEach is not the only array function that has been added in the la
 
 ```javascript
 // Turn the groups data into a lists of bricks
-var bricks = groups.flatMap( (group) =>
+let bricks = groups.flatMap( (group) =>
 	group.clues.map( (clue) => ({
 		clue: clue,
 		link: group.link
@@ -238,7 +238,7 @@ Next I needed to randomise the order of the bricks.  I checked to see if this is
 
 ```javascript
 function shuffle(array) {
-	for(var i=array.length-1; i>0; i--) {
+	for(let i=array.length-1; i>0; i--) {
 		let rand = Math.floor(Math.random() * (i+1));
 		let temp = array[rand];
 		array[rand] = array[i];
@@ -271,7 +271,7 @@ In my initial version of this code, I added a single listener to the wall elemen
 
 ```javascript
 wall.addEventListener("click", function(event) {
-	var el = event.target;
+	let el = event.target;
 	while(!el.classList.contains("brick") && el!=wall) {
 		el = el.parentNode;
 	}
@@ -618,7 +618,7 @@ function getData() {
 	let groups = data.split("|");
 	if(groups[0]==="4" && groups.length==5) {
 		return groups.slice(1).map(function(group) {
-			var clues = group.split(";");
+			let clues = group.split(";");
 			return {
 				link: clues[0],
 				clues: clues.slice(1)

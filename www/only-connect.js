@@ -2,7 +2,7 @@
 
 (function() {
 	function shuffle(array) {
-		for(var i=array.length-1; i>0; i--) {
+		for(let i=array.length-1; i>0; i--) {
 			let rand = Math.floor(Math.random() * (i+1));
 			let temp = array[rand];
 			array[rand] = array[i];
@@ -36,7 +36,7 @@
 		}
 
 		// Turn the groups data into a shuffled lists of bricks
-		var bricks = groups.flatMap( (group) =>
+		let bricks = groups.flatMap( (group) =>
 			group.clues.map( (clue) => ({
 				clue: clue,
 				link: group.link,
@@ -255,7 +255,7 @@
 		let groups = data.split("|");
 		if(groups[0]==="4" && groups.length==5) {
 			return groups.slice(1).map(function(group) {
-				var clues = group.split(";");
+				let clues = group.split(";");
 				return {
 					link: clues[0],
 					clues: clues.slice(1)
