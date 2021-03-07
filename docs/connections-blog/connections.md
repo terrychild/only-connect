@@ -130,13 +130,13 @@ Which produced a wall that looks like this:
 
 The width of the bricks is driven by the width of the grid and therefore the width of the screen, I’m happy with this.  The height however is driven by their content and I wanted instead to make the wall and bricks a constant aspect ratio and size the content to fit the brick.
 
-Disappointingly I could not find a CSS property to control aspect ratio.  There are a few well documented tricks though and the seemingly most popular option is to use padding-top set to a percentage value.  The trick here is the padding-top percentage is calculated based on the element's width.  This allowed me to set the height of the element relative to its width, in my case setting the padding-top to 56.25% gave me a 16:9 aspect ratio.  A child div is then absolutely positioned inside the container for the content.  This worked ok initially but I hit problems later on when animating the bricks so I was starting to believe I would need to use JavaScript to solve this problem..
+Disappointingly I could not find a CSS property to control aspect ratio.  There are a few well documented tricks though and the seemingly most popular option is to use padding-top set to a percentage value.  The trick here is the padding-top percentage is calculated based on the element's width.  This allowed me to set the height of the element relative to its width, in my case setting the padding-top to 56.25% gave me a 16:9 aspect ratio.  A child div is then absolutely positioned inside the container for the content.  This worked ok initially but I hit problems later on when animating the bricks so I was starting to believe I would need to use JavaScript to solve this problem.
 
 Getting the content to fit the container also proved to be difficult with pure CSS.  There is an object-fit property that controls how content should be sized to fit its container, but this only applies to replaced elements such as images and canvases.  In my case the content is text and I want the font size to scale to fit.  I tried using the vh units in font-size property to set the font size relative to the screen height and after some trial and error got acceptable results on my computer with browser windows at various sizes.  When I tested it on my phone it worked if my phone was in landscape, but when I switched to portrait the text became too large.  If I calibrated the font size to work on a portrait screen it became too small in landscape.
 
 The problem is using the vh or vw units for the font size makes it relative to the viewport and not it’s container.  Reluctantly I decided I would have to use JavaScript to compute the font size.  This gave me the opportunity to use another new feature for me, the observers.
 
-It is not enough to compute the font size when the page loads, you also need to re-compute the size whenever the container changes size.  This would typically happen if the user resizes the browser window, maximises or restores the window and on a phone if the device is rotated from landscape to portrait.  The windows has a resize event so it’s a simple enough task to add a listener to this event to re-compute the font size when needed..
+It is not enough to compute the font size when the page loads, you also need to re-compute the size whenever the container changes size.  This would typically happen if the user resizes the browser window, maximises or restores the window and on a phone if the device is rotated from landscape to portrait.  The window has a resize event so it’s a simple enough task to add a listener to this event to re-compute the font size when needed.
 
 However the container can also change size if other elements on the page are added, removed or otherwise manipulated.  I’m planning on doing this later for displaying the links between the clues for each group.  This would not trigger the window resize event but could need the font size to be recomputed.  As these manipulations would normally be triggered by JavaScript I could also trigger the same resize listener when I thought it was necessary and if I remember to add the call.  In my experience it’s not always clear if it is necessary as the last action may not have changed the size or shape of anything but to be on the safe side would trigger the listener anyway.
 
@@ -220,7 +220,7 @@ groups.forEach(function(group) {
 });
 ```
 
-However the forEach is not the only array function however that has been added in the last decade and I’ve been guilty of over using it when there are probably more appropriate options.  After a quick read of an up-to-date reference I decided to take advantage of flatMap and map.  The new code looks like this:
+However the forEach is not the only array function that has been added in the last decade and I’ve been guilty of over using it when there are probably more appropriate options.  After a quick read of an up-to-date reference I decided to take advantage of flatMap and map.  The new code looks like this:
 
 ```javascript
 // Turn the groups data into a lists of bricks
@@ -234,7 +234,7 @@ var bricks = groups.flatMap( (group) =>
 
 Structurally these are very similar.  The second example has slightly less code and benefits from indicating the intention of the code, i.e. we are mapping data not just looping through an array.  I’m also led to believe that flatMap and map are going to be more efficient than the generic forEach loops, however in my tiny example it is not noticeable.
 
-Next I needed to randomise the order of the bricks.  I checked to make sure there is now not also a built-in function for arrays, as far as I can tell, there is not.  I therefore used an algorithm I’ve used before.  This method picks a random element from the array and moves it to the end of the array.  It then repeats this process for all but the last element of the array, moving the randomly selected element to the second to last place.  This continues with an ever decreasing slice of the array until the slice is only one element long.
+Next I needed to randomise the order of the bricks.  I checked to see if this is something that is now built-in for arrays, I couldn't find anything.  I therefore used an algorithm I’ve used before.  This method picks a random element from the array and moves it to the end of the array.  It then repeats this process for all but the last element of the array, moving the randomly selected element to the second to last place.  This continues with an ever decreasing slice of the array until the slice is only one element long.
 
 ```javascript
 function shuffle(array) {
@@ -317,7 +317,7 @@ When a brick is selected it needs to change colour to indicate it has been selec
 
 ![alt_text](images/colours.png "Wall colours")
 
-The game logic uses the group variable to keep track of which group is currently being built and the selected array to keep a list of those selected bricks.  The selectBrick function adds a brick to this array and updates the class of the brick with the current group.  If the brick is already selected then it removes the class and removes it from the array, this allows the player to unselect a brick.  When the number of selected bricks reaches 4 the checkSelected function is called to validate the selection.  For now this just clears the selection as if it was an invalid selection.
+The game logic uses a group variable to keep track of which group is currently being built and a selected array to keep a list of those selected bricks.  The selectBrick function adds a brick to this array and updates the class of the brick with the current group.  If the brick is already selected then it removes the class and removes it from the array, this allows the player to unselect a brick.  When the number of selected bricks reaches 4 the checkSelected function is called to validate the selection.  For now this just clears the selection as if it was an invalid selection.
 
 ```javascript
 // interaction
@@ -348,7 +348,7 @@ function checkSelected() {
 
 ![alt_text](images/oc-1.gif "Selection test")
 
-It seems at first glance that the fourth brick is not being selected.  This is because the moment the brick is selected the checkSelected function is called which then clears the selection.  I need to add a short delay before running the check code.  Thinking forwards a little bit, this is the point I would trigger any animation if the group is a valid selection.  I want to block the player from changing any selections during this animation so I need to add a lock flag to the game logic, set the flag to true whenever a fourth brick is selected and prevent the player from interaction during this delay/animation.
+It seems at first glance that the fourth brick is not being selected.  This is because the moment the brick is selected the checkSelected function is called which then clears the selection.  I need to add a short delay before running the check code.  Thinking forwards a little bit, this is the point I would trigger any animation if the group is a valid selection.  I want to block the player from changing any selections during this animation so I added a lock flag to the game logic, setting the flag to true whenever a fourth brick is selected to prevent the player from interaction during this delay/animation.
 
 The updated code with the locked flag and a timeout on the checkSelected call.
 
@@ -401,7 +401,7 @@ if(selected.filter(brick => brick.link!=link).length==0) {
 }
 ```
 
-I already have the code for when the group is incorrect which removes the group class from the bricks and clear the selection array.  When the group is correct I need to move these bricks to the top of the wall and let the player build the next group.
+I already have the code for when the group is incorrect which removes the group class from the bricks and clears the selection array.  When the group is correct I need to move these bricks to the top of the wall and let the player build the next group.
 
 I started this by getting each brick to store which group number it is part of.  To help with sorting I wanted the initial value for each brick to be bigger than any valid group.  I therefore updated the loop that creates the brick array to set this group to 4 (I actually used the constant WIDTH just in case).  When checkSelected detects a valid group, it updates the group value in the selected bricks to the current group number.
 
@@ -423,8 +423,8 @@ I use two variables, groupIndex and unsolvedndex, to track where elements for th
 I can now use the following logic to work out what the new index for each element should be:
 
 *   For bricks who have a group smaller than the current group, they have already been moved to the top of the wall and can be left alone.
-*   For bricks with a group equal to the current group number they need to be moved “up” to the next available row.
-*   For bricks with a group number greater than the current group they need to be moved “down” to an available space.
+*   For bricks with a group equal to the current group number they need to be moved “up” to the next available row, the location of which is indicated by the groupIndex variable.
+*   For bricks with a group number greater than the current group they need to be moved “down” to an available space as pointed to by the unsolvedIndex.
 
 ![alt_text](images/wall5.png "Wall indexes")
 
@@ -446,7 +446,7 @@ bricks.forEach(function(brick, index) {
 bricks.sort((a,b) => a.newIndex - b.newIndex);
 ```
 
-As nice as it is to have a neatly sorted array, the bricks on the screen are still in their original order.  Before I get to animating the movement, I want to test the logic above is working correctly.  I’ve therefore gone for a low tech approach of removing all the bricks and then re-adding them in the correct order.
+As nice as it is to have a neatly sorted array, the bricks on the screen are still in their original order.  Before I get to animating the movement, I want to visually the logic above is working correctly.  I’ve therefore gone for a low tech approach of removing all the bricks and then re-adding them in the correct order.
 
 ```javascript
 // move
@@ -506,7 +506,7 @@ bricks.forEach(function(brick) {
 
 I did this so the cell div would be positioned by the browser using the CSS grid layout, the brick would then be positioned relative to the cell.  I could therefore mess with the bricks position without fighting the grid.  By default the bricks would be positioned at the top left of the cell, so visually there would be no difference from what I had before.
 
-I also updated the code that calculates the newIndex for each brick.  Once it has computed its new position in the array and before the array is sorted, it queries the brick currently at that index and saves the top and left position of that brick’s cell relative to the grid.
+I also updated the code that calculates the newIndex for each brick.  Once it has computed its new position in the array and before the array is sorted, it queries the brick currently at that index and saves the top and left positions of that brick’s cell relative to the grid.
 
 ```javascript
 // calculate new position in the grid
@@ -539,8 +539,6 @@ setTimeout(function() {
 		wall.removeChild(brick.cell);
 		brick.html.style.top = "0px";
 		brick.html.style.left = "0px";
-	});
-	bricks.forEach(function(brick) {
 		wall.appendChild(brick.cell);
 	});
 }, 1000);
@@ -585,7 +583,7 @@ The important code is behind the “Generate Link” button.  Initially I was go
 4|link0;clue0_0;clue0_1;clue0_2;clue0_3|link1;clue1_0...
 ```
 
-One idea I abandoned was the ability for different size grids.  The number at the start of the string would indicate the width and height of the grid, as it stands this would always be a 4 but I left it there, just in case.
+One idea I abandoned was the ability for different size grids.  The number at the start of the string would indicate the width and height of the grid, as it stands this would always be a 4 but I left it there, in case I change my mind.
 
 I use the array reduce function to turn the array of groups and clues into the encoded string.  Each input is validated to ensure it is not blank, a duplice or contains the semicolon or pipe characters (as this would break the encoding).  If the data is encoded without error I then use the btoa function to base64 encode the data which makes it both URL safe and obfuscates it.
 
@@ -612,7 +610,7 @@ try {
 }
 ```
 
-The reverse of this process is handled by the getData function.  This reads the data from the URL, converts it from base64 using the atob function, then a combination of split and map to create the array of groups required for the main wall.  It does some basic validation, checking the string starts with a 4 for example and there are the correct number of groups.  If there are any problems the function returns null and the wall will switch back to a hardcoded default wall.
+The reverse of this process is handled by the getData function.  This reads the data from the URL, converts it from base64 using the atob function, then a combination of split and map to create the array of groups required for the main wall.  It does some basic validation, checking the string starts with a 4 and there are the correct number of groups.  If there are any problems the function returns null and the wall will switch back to a hardcoded default wall.
 
 ```javascript
 function getData() {
@@ -654,9 +652,11 @@ I’m not writing off all libraries, they have their place but if like me you st
 
 ## Links
 
-You can find the full source on [github](https://github.com/terrychild/only-connect).
+You can find the Only Connect TV show on BBC2 and the iPlayer.
 
-Here are a number of wall's we've created you can have a go at:
+You can find the source code for this project on [github](https://github.com/terrychild/only-connect).
+
+Here are a number of wall's my friends an I have created you can have a go at:
 * [The one that triggered this whole project](http://www.moohar.com/only-connect/play.html?NHxNZXRhbHM7bGVhZDtnb2xkO2NvcHBlcjt6aW5jfEluc2VjdHM7d2FzcDtmbHk7Y3JpY2tldDtiZWV0bGV8X19fX21hbjtzcGlkZXI7c3VwZXI7YW50O2JhdHxNb25vbG9weSBwaWVjZXM7Y2FyO2Jvb3Q7aXJvbjtkb2c=).
 * [The difficult sequel](http://www.moohar.com/only-connect/play.html?NHxTY290dGlzaCBCYW5kcztCZWxsZSAmIFNlYmFzdGlhbjtJZGxld2lsZDtUZXhhcztUcmF2aXN8UmVuYWlzc2FuY2UgYXJ0aXN0cztSYXBoYWVsO0RvbmF0ZWxsbztCb3R0aWNlbGxpO01pY2hlbGFuZ2Vsb3xBc3Nhc3NpbmF0aW9uIHZpY3RpbXM7SkZLO0ZyYW56IEZlcmRpbmFuZDtNYWhhdG1hIEdhbmRoaTtNYXJ0aW4gTHV0aGVyIEtpbmd8QWlycG9ydHM7U2NoaXBvbDtDaGFybGVzIERlIEdhdWxsZTtHYXR3aWNrO0xlb25hcmRvIERhIFZpbmNp).
 * [One for movie fans](http://www.moohar.com/only-connect/play.html?NHxCYXRtYW47Q2xvb25leTtCYWxlO0tpbG5lcjtLZWF0b258Qm9uZDtDb25uZXJ5O01vb3JlO0Jyb3NuYW47Q3JhaWd8SmFjayBSeWFuO0JhbGR3aW47Rm9yZDtBZmZsZWNrO1BpbmV8RHVtYmxlZG9yZTtIYXJyaXM7R2FtYm9uO0xhdztSZWdibw==).
