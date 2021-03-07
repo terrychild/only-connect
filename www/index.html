@@ -4,18 +4,29 @@
 		<meta charset="utf-8">
 		<title>Only Connect</title>
 		<link rel="stylesheet" href="only-connect.css">
-		<script src="only-connect.js"></script>
-
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+		<style>
+			p {
+				margin: 10px;
+			}
+			a {
+				color: #91C3E4;
+			}
+		</style>
 	</head>
 	<body>
-		<script>
-			wall([
-				{clues:["lead", "gold", "copper", "zinc"], link:"Metals"},
-				{clues:["wasp", "fly", "cricket", "beetle"], link:"Insects"},
-				{clues:["spider", "super", "ant", "bat"], link:"____man"},
-				{clues:["car", "boot", "iron", "dog"], link:"Monolopy pieces"}
-			]);
-		</script>
+		<p>Make your own conneting wall <a href="./edit.html">here</a>.</p>
+		<p>Or find a selection of walls of varying difficulty we have already created:</p>
+		<ul>
+			<li><a href="./play.html?NHxNZXRhbHM7bGVhZDtnb2xkO2NvcHBlcjt6aW5jfEluc2VjdHM7d2FzcDtmbHk7Y3JpY2tldDtiZWV0bGV8X19fX21hbjtzcGlkZXI7c3VwZXI7YW50O2JhdHxNb25vbG9weSBwaWVjZXM7Y2FyO2Jvb3Q7aXJvbjtkb2c=">Wall 1</a></li>
+			<li><a href="./play.html?NHxTY290dGlzaCBCYW5kcztCZWxsZSAmIFNlYmFzdGlhbjtJZGxld2lsZDtUZXhhcztUcmF2aXN8UmVuYWlzc2FuY2UgYXJ0aXN0cztSYXBoYWVsO0RvbmF0ZWxsbztCb3R0aWNlbGxpO01pY2hlbGFuZ2Vsb3xBc3Nhc3NpbmF0aW9uIHZpY3RpbXM7SkZLO0ZyYW56IEZlcmRpbmFuZDtNYWhhdG1hIEdhbmRoaTtNYXJ0aW4gTHV0aGVyIEtpbmd8QWlycG9ydHM7U2NoaXBvbDtDaGFybGVzIERlIEdhdWxsZTtHYXR3aWNrO0xlb25hcmRvIERhIFZpbmNp">Wall 2</a></li>
+			<li><a href="./play.html?NHxUb3AgX19fX187R3VuO1Nob3A7SGF0O0dlYXJ8UXVhcmtzO1N0cmFuZ2U7Q2hhcm07VG9wO0Rvd258UGl4YXIgZmlsbXM7VXA7U291bDtCcmF2ZTtDYXJzfERuRCBDaGFyYWN0ZXIgdHJhaXRzO0FnZ3Jlc3NpdmU7RGlzaG9uZXN0O1BvbGl0ZTtQYXNzaW9uYXRl">Wall 3</a></li>
+			<li><a href="./play.html?NHxfX19fc2VhIElzbGFuZDtQb3J0O0Jyb3duO01lcjtXYWxsYXxTbGFuZyBmb3IgbW9uZXk7R3JlZW5zO0dyYW5kO0RvdWdoO01vbmtleXxSZXNpbnM7RnJhbmtpbmNlbnNlO0FtYmVyO0JhbHNhbTtIYXNoaXNofFRyYWRpdGlvbmFsIGFubml2ZXJzYXJ5IGdpZnRzO0dvbGQ7U2FsdDtTaWxrO1BlYXJs">Wall 4</a></li>
+			<li><a href="./play.html?NHxNciBNZW47SGFwcHk7QnVtcDtTdHJvbmc7VG9wc3ktVHVydnl8TmluamEgVHVydGxlcztNaWNoZWxhbmdlbG87UmFwaGFlbDtEb25hdGVsbG87TGVvbmFyZG98U2hlLVJhO1ByaW5jZXNzIEFkb3JhO01hZGFtZSBSYXp6O1NwaXJpdDtLb3dsfENhcnRvb24gTWljZTtNaWNrZXk7SmVycnk7UmVteTtGaWV2ZWw=">Wall 5</a></li>
+			<li><a href="./play.html?NHxCYXRtYW47Q2xvb25leTtCYWxlO0tpbG5lcjtLZWF0b258Qm9uZDtDb25uZXJ5O01vb3JlO0Jyb3NuYW47Q3JhaWd8SmFjayBSeWFuO0JhbGR3aW47Rm9yZDtBZmZsZWNrO1BpbmV8RHVtYmxlZG9yZTtIYXJyaXM7R2FtYm9uO0xhdztSZWdibw==">Wall 6</a></li>
+			<li><a href="./play.html?NHxUb2lsZXRzO0JvZztMYXY7TG9vO0NhbnxFbXBlcm9yO0hpcm9oaXRvO0FuZ2VsZmlzaDtQZW5ndWluO1BhbGF0aW5lfFN0YXIgV2FycztGaW5uO0xhbmRvO0phckphcjtIYW58VGhlIEdvc3BlbHM7THVrZTtNYXR0aGV3O0pvaG47TWFyaw==">Wall 7</a></li>
+			<li><a href="./play.html?NHxMaWxsaWVzO0JlbGxhZG9ubmE7Q2FsbGE7TWFkb25uYTtUcnVtcGV0fENoYXQgU2hvdyBIb3N0cztNaWNoYWVsO0plcmVteTtMb3JhaW5lO0hvbGx5fExpdHRsZSBXb21lbjtCZXRoO01lZztKbztBbXl8Q2hyaXN0bWFzO1RyZWU7U3RhcjtJdnk7QW5nZWw=">Wall 8</a></li>
+			<li><a href="./play.html?NHxTdXBlcnZpbGxhaW5zO0phbWVzIE1vcmlhcnR5O0VybnN0IFN0YXZybyBCbG9mZWxkO0hhcmxleSBRdWlubjtHcmVlbiBHb2JsaW58R2VuZSBIYWNrbWFuO0xleCBMdXRob3I7Um95YWwgVGVuZW5iYXVtO0Vkd2FyZCAnQnJpbGwnIEx5bGU7TGl0dGxlIEJpbGwgRGFnZ2V0dHxTaGVybG9jayBIb2xtZXM7QmFrZXIgU3RyZWV0O0pvaG4gV2F0c29uO0VsZW1lbnRhcnk7RGVlcnN0YWxrZXJ8VHViZSBTdGF0aW9ucztWaWN0b3JpYTtNYXJ5bGVib25lO092YWw7VGVtcGxl">Wall 9</a></li>
+			<li><a href="./play.html?NHxEZXRlY3RpdmVzO1N0cmlrZTtQb2lyb3Q7TWFycztNYWdudW18SWNlIGNyZWFtO0Nvcm5ldHRvO0tpdCBLYXQ7Qm91bnR5O0RhaXJ5IE1pbGt8T25lIERpcmVjdGlvbjtTdHlsZXM7VG9tbGluc29uO0hvcmFuO1BheW5lfFRoZSBEb2N0b3I7V2hpdHRha2VyO0NhcGFsZGk7U21pdGg7VGVubmFudA==">Wall 10</a></li>
+		</ul>
 	</body>
 </html>
